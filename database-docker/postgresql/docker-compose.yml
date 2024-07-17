@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres
+    image: postgres:latest
     restart: always
     container_name: postgres_db
     volumes:
@@ -20,7 +20,7 @@ services:
       - app-network
 
   adminer:
-    image: adminer
+    image: adminer:latest
     restart: always
     container_name: adminer
     ports:
