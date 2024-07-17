@@ -2,18 +2,37 @@ services:
   db:
     image: postgres
     restart: always
+    container_name: postgres_db
     volumes:
-      - ./data/db:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
     ports:
-      - 5432:5432  # make sure you don't have another container running on 5432
-
+      - 5432:5432
     environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - app-network
 
   adminer:
     image: adminer
     restart: always
+    container_name: adminer
     ports:
       - 8080:8080
+    networks:
+      - app-network
+
+volumes:
+  db_data:
+
+networks:
+  app-network:
+
+env_file:
+  - .env
