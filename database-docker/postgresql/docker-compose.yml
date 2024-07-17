@@ -16,6 +16,8 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+    env_file:
+      - .env
     networks:
       - app-network
 
@@ -24,7 +26,7 @@ services:
     restart: always
     container_name: adminer
     ports:
-      - 8080:8080
+      - 8081:8080
     networks:
       - app-network
 
@@ -34,5 +36,4 @@ volumes:
 networks:
   app-network:
 
-env_file:
-  - .env
+
